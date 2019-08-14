@@ -19,7 +19,7 @@ class PeriodCollection implements ArrayAccess, Iterator, Countable
      *
      * @return static
      */
-    public static function make(Period ...$periods): PeriodCollection
+    public static function make(Period ...$periods)
     {
         return new static(...$periods);
     }
@@ -29,7 +29,7 @@ class PeriodCollection implements ArrayAccess, Iterator, Countable
         $this->periods = $periods;
     }
 
-    public function current(): Period
+    public function current()
     {
         return $this->periods[$this->position];
     }
@@ -39,7 +39,7 @@ class PeriodCollection implements ArrayAccess, Iterator, Countable
      *
      * @return static
      */
-    public function overlapSingle(PeriodCollection $periodCollection): PeriodCollection
+    public function overlapSingle(PeriodCollection $periodCollection)
     {
         $overlaps = static::make();
 
@@ -61,7 +61,7 @@ class PeriodCollection implements ArrayAccess, Iterator, Countable
      *
      * @return static
      */
-    public function overlap(PeriodCollection ...$periodCollections): PeriodCollection
+    public function overlap(PeriodCollection ...$periodCollections)
     {
         $overlap = clone $this;
 
@@ -72,7 +72,7 @@ class PeriodCollection implements ArrayAccess, Iterator, Countable
         return $overlap;
     }
 
-    public function boundaries(): ?Period
+    public function boundaries()
     {
         $start = null;
         $end = null;
@@ -91,7 +91,7 @@ class PeriodCollection implements ArrayAccess, Iterator, Countable
             return null;
         }
 
-        [$firstPeriod] = $this->periods;
+        list($firstPeriod) = $this->periods;
 
         return new Period(
             $start,
@@ -104,7 +104,7 @@ class PeriodCollection implements ArrayAccess, Iterator, Countable
     /**
      * @return static
      */
-    public function gaps(): PeriodCollection
+    public function gaps()
     {
         $boundaries = $this->boundaries();
 
@@ -120,7 +120,7 @@ class PeriodCollection implements ArrayAccess, Iterator, Countable
      *
      * @return static
      */
-    public function intersect(Period $intersection): PeriodCollection
+    public function intersect(Period $intersection)
     {
         $intersected = static::make();
 
@@ -142,7 +142,7 @@ class PeriodCollection implements ArrayAccess, Iterator, Countable
      *
      * @return static
      */
-    public function add(Period ...$periods): PeriodCollection
+    public function add(Period ...$periods)
     {
         $collection = clone $this;
 
@@ -158,7 +158,7 @@ class PeriodCollection implements ArrayAccess, Iterator, Countable
      *
      * @return static
      */
-    public function map(Closure $closure): PeriodCollection
+    public function map(Closure $closure)
     {
         $collection = clone $this;
 
@@ -186,7 +186,7 @@ class PeriodCollection implements ArrayAccess, Iterator, Countable
         return $carry;
     }
 
-    public function isEmpty(): bool
+    public function isEmpty()
     {
         return count($this->periods) === 0;
     }

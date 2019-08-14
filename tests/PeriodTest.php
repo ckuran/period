@@ -61,7 +61,7 @@ class PeriodTest extends TestCase
         $this->assertFalse($a->overlapsWith($b));
     }
 
-    public function overlappingDates(): array
+    public function overlappingDates()
     {
         return [
             /*
@@ -510,7 +510,7 @@ class PeriodTest extends TestCase
      * @test
      * @dataProvider expectedPeriodLengths
      */
-    public function it_is_iterable(int $expectedCount, Period $period)
+    public function it_is_iterable($expectedCount, Period $period)
     {
         $this->assertSame($expectedCount, iterator_count($period));
     }

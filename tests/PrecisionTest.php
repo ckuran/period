@@ -16,9 +16,9 @@ class PrecisionTest extends TestCase
      * @dataProvider roundingDates
      */
     public function dates_are_rounded_on_precision(
-        int $precision,
-        string $expectedStart,
-        string $expectedEnd
+        $precision,
+        $expectedStart,
+        $expectedEnd
     ) {
         $period = Period::make(
             '2018-02-05 11:11:11',
@@ -37,7 +37,7 @@ class PrecisionTest extends TestCase
         );
     }
 
-    public function roundingDates(): array
+    public function roundingDates()
     {
         return [
             [Precision::YEAR, '2018-01-01 00:00:00', '2018-01-01 00:00:00'],
@@ -193,7 +193,7 @@ class PrecisionTest extends TestCase
         $a = Period::make('2018-01-05 00:00:00', '2018-01-10 00:00:00', Precision::MINUTE);
         $b = Period::make('2018-01-15 00:00:00', '2018-03-01 00:00:00', Precision::MINUTE);
 
-        [$diff] = $a->diff($b);
+        list($diff) = $a->diff($b);
 
         $this->assertEquals(Precision::MINUTE, $diff->getPrecisionMask());
     }
@@ -204,7 +204,7 @@ class PrecisionTest extends TestCase
         $a = Period::make('2018-01-05 00:00:00', '2018-01-10 00:00:00', Precision::MINUTE);
         $b = Period::make('2018-01-01 00:00:00', '2018-01-31 00:00:00', Precision::MINUTE);
 
-        [$diff] = $a->overlap($b);
+        list($diff) = $a->overlap($b);
 
         $this->assertEquals(Precision::MINUTE, $diff->getPrecisionMask());
     }

@@ -10,7 +10,7 @@ use PHPUnit\Framework\TestCase;
 class DateTimeExtensionTest extends TestCase
 {
     /** @test */
-    public function it_should_be_possible_use_date_time_extensions() : void
+    public function it_should_be_possible_use_date_time_extensions()
     {
         $start = new DateTimeExtension('2019-05-22');
         $end = new DateTimeExtension('2019-06-05');
@@ -23,7 +23,7 @@ class DateTimeExtensionTest extends TestCase
     }
 
     /** @test */
-    public function it_should_be_possible_to_use_period_extension_to_force_date_time_extension() : void
+    public function it_should_be_possible_to_use_period_extension_to_force_date_time_extension()
     {
         $period = TestPeriod::make('2019-05-01', '2019-05-31');
 
@@ -37,7 +37,7 @@ class DateTimeExtensionTest extends TestCase
  */
 class DateTimeExtension extends DateTimeImmutable
 {
-    public static function instance(DateTimeImmutable $dateTime): self
+    public static function instance(DateTimeImmutable $dateTime)
     {
         return new static($dateTime->format('Y-m-d H:i:s.u'), $dateTime->getTimezone());
     }
@@ -57,19 +57,19 @@ class TestPeriod extends Period
     /** @var DateTimeExtension */
     protected $end;
 
-    public function __construct(DateTimeExtension $start, DateTimeExtension $end, ?int $precisionMask = null, ?int $boundaryExclusionMask = null)
+    public function __construct(DateTimeExtension $start, DateTimeExtension $end, $precisionMask = null, $boundaryExclusionMask = null)
     {
         parent::__construct($start, $end, $precisionMask, $boundaryExclusionMask);
     }
 
     /** @return DateTimeExtension */
-    protected static function resolveDate($date, ?string $format): DateTimeImmutable
+    protected static function resolveDate($date, $format)
     {
         return DateTimeExtension::instance(parent::resolveDate($date, $format));
     }
 
     /** @return DateTimeExtension */
-    protected function roundDate(DateTimeInterface $date, int $precision): DateTimeImmutable
+    protected function roundDate(DateTimeInterface $date, $precision)
     {
         return DateTimeExtension::instance(parent::roundDate($date, $precision));
     }

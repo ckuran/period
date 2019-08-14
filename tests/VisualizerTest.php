@@ -26,7 +26,7 @@ class VisualizerTest extends TestCase
         $this->assertEquals($expected, $actual);
     }
 
-    public function overlapping(): array
+    public function overlapping()
     {
         return [
             [
@@ -91,7 +91,7 @@ class VisualizerTest extends TestCase
         ];
     }
 
-    public function nonOverlapping(): array
+    public function nonOverlapping()
     {
         return [
             [
@@ -120,7 +120,7 @@ class VisualizerTest extends TestCase
         ];
     }
 
-    public function singleOverlaps(): array
+    public function singleOverlaps()
     {
         return [
             [
@@ -139,7 +139,7 @@ class VisualizerTest extends TestCase
         ];
     }
 
-    public function multipleOverlaps(): array
+    public function multipleOverlaps()
     {
         return [
             [

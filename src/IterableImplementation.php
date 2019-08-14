@@ -8,7 +8,7 @@ trait IterableImplementation
 
     public function offsetGet($offset)
     {
-        return $this->periods[$offset] ?? null;
+        return isset($this->periods[$offset]) ? $this->periods[$offset] : null;
     }
 
     public function offsetSet($offset, $value)
@@ -52,7 +52,7 @@ trait IterableImplementation
         $this->position = 0;
     }
 
-    public function count(): int
+    public function count()
     {
         return count($this->periods);
     }

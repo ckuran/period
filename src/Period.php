@@ -38,15 +38,15 @@ class Period implements IteratorAggregate
     public function __construct(
         DateTimeImmutable $start,
         DateTimeImmutable $end,
-        ?int $precisionMask = null,
-        ?int $boundaryExclusionMask = null
+        $precisionMask = null,
+        $boundaryExclusionMask = null
     ) {
         if ($start > $end) {
             throw InvalidPeriod::endBeforeStart($start, $end);
         }
 
-        $this->boundaryExclusionMask = $boundaryExclusionMask ?? Boundaries::EXCLUDE_NONE;
-        $this->precisionMask = $precisionMask ?? Precision::DAY;
+        $this->boundaryExclusionMask = isset($boundaryExclusionMask) ? $boundaryExclusionMask : Boundaries::EXCLUDE_NONE;
+        $this->precisionMask = isset($precisionMask) ? $precisionMask : Precision::DAY;
 
         $this->start = $this->roundDate($start, $this->precisionMask);
         $this->end = $this->roundDate($end, $this->precisionMask);
@@ -73,10 +73,10 @@ class Period implements IteratorAggregate
     public static function make(
         $start,
         $end,
-        ?int $precisionMask = null,
-        ?int $boundaryExclusionMask = null,
-        ?string $format = null
-    ): Period {
+        $precisionMask = null,
+        $boundaryExclusionMask = null,
+        $format = null
+    ) {
         if ($start === null) {
             throw InvalidDate::cannotBeNull('Start date');
         }
@@ -93,54 +93,54 @@ class Period implements IteratorAggregate
         );
     }
 
-    public function startIncluded(): bool
+    public function startIncluded()
     {
         return ! $this->startExcluded();
     }
 
-    public function startExcluded(): bool
+    public function startExcluded()
     {
         return Boundaries::EXCLUDE_START & $this->boundaryExclusionMask;
     }
 
-    public function endIncluded(): bool
+    public function endIncluded()
     {
         return ! $this->endExcluded();
     }
 
-    public function endExcluded(): bool
+    public function endExcluded()
     {
         return Boundaries::EXCLUDE_END & $this->boundaryExclusionMask;
     }
 
-    public function getStart(): DateTimeImmutable
+    public function getStart()
     {
         return $this->start;
     }
 
-    public function getIncludedStart(): DateTimeImmutable
+    public function getIncludedStart()
     {
         return $this->includedStart;
     }
 
-    public function getEnd(): DateTimeImmutable
+    public function getEnd()
     {
         return $this->end;
     }
 
-    public function getIncludedEnd(): DateTimeImmutable
+    public function getIncludedEnd()
     {
         return $this->includedEnd;
     }
 
-    public function length(): int
+    public function length()
     {
         $length = $this->getIncludedStart()->diff($this->getIncludedEnd())->days + 1;
 
         return $length;
     }
 
-    public function overlapsWith(Period $period): bool
+    public function overlapsWith(Period $period)
     {
         $this->ensurePrecisionMatches($period);
 
@@ -155,7 +155,7 @@ class Period implements IteratorAggregate
         return true;
     }
 
-    public function touchesWith(Period $period): bool
+    public function touchesWith(Period $period)
     {
         $this->ensurePrecisionMatches($period);
 
@@ -170,27 +170,27 @@ class Period implements IteratorAggregate
         return false;
     }
 
-    public function startsBefore(DateTimeInterface $date): bool
+    public function startsBefore(DateTimeInterface $date)
     {
         return $this->getIncludedStart() < $date;
     }
 
-    public function startsBeforeOrAt(DateTimeInterface $date): bool
+    public function startsBeforeOrAt(DateTimeInterface $date)
     {
         return $this->getIncludedStart() <= $date;
     }
 
-    public function startsAfter(DateTimeInterface $date): bool
+    public function startsAfter(DateTimeInterface $date)
     {
         return $this->getIncludedStart() > $date;
     }
 
-    public function startsAfterOrAt(DateTimeInterface $date): bool
+    public function startsAfterOrAt(DateTimeInterface $date)
     {
         return $this->getIncludedStart() >= $date;
     }
 
-    public function startsAt(DateTimeInterface $date): bool
+    public function startsAt(DateTimeInterface $date)
     {
         return $this->getIncludedStart()->getTimestamp() === $this->roundDate(
             $date,
@@ -198,7 +198,7 @@ class Period implements IteratorAggregate
         )->getTimestamp();
     }
 
-    public function endsBefore(DateTimeInterface $date): bool
+    public function endsBefore(DateTimeInterface $date)
     {
         return $this->getIncludedEnd() < $this->roundDate(
                 $date,
@@ -206,7 +206,7 @@ class Period implements IteratorAggregate
             );
     }
 
-    public function endsBeforeOrAt(DateTimeInterface $date): bool
+    public function endsBeforeOrAt(DateTimeInterface $date)
     {
         return $this->getIncludedEnd() <= $this->roundDate(
                 $date,
@@ -214,7 +214,7 @@ class Period implements IteratorAggregate
             );
     }
 
-    public function endsAfter(DateTimeInterface $date): bool
+    public function endsAfter(DateTimeInterface $date)
     {
         return $this->getIncludedEnd() > $this->roundDate(
                 $date,
@@ -222,7 +222,7 @@ class Period implements IteratorAggregate
             );
     }
 
-    public function endsAfterOrAt(DateTimeInterface $date): bool
+    public function endsAfterOrAt(DateTimeInterface $date)
     {
         return $this->getIncludedEnd() >= $this->roundDate(
                 $date,
@@ -230,7 +230,7 @@ class Period implements IteratorAggregate
             );
     }
 
-    public function endsAt(DateTimeInterface $date): bool
+    public function endsAt(DateTimeInterface $date)
     {
         return $this->getIncludedEnd()->getTimestamp() === $this->roundDate(
                 $date,
@@ -238,7 +238,7 @@ class Period implements IteratorAggregate
             )->getTimestamp();
     }
 
-    public function contains(DateTimeInterface $date): bool
+    public function contains(DateTimeInterface $date)
     {
         if ($this->roundDate($date, $this->precisionMask) < $this->getIncludedStart()) {
             return false;
@@ -251,7 +251,7 @@ class Period implements IteratorAggregate
         return true;
     }
 
-    public function equals(Period $period): bool
+    public function equals(Period $period)
     {
         $this->ensurePrecisionMatches($period);
 
@@ -272,7 +272,7 @@ class Period implements IteratorAggregate
      * @return static|null
      * @throws \Exception
      */
-    public function gap(Period $period): ?Period
+    public function gap(Period $period)
     {
         $this->ensurePrecisionMatches($period);
 
@@ -304,7 +304,7 @@ class Period implements IteratorAggregate
      *
      * @return static|null
      */
-    public function overlapSingle(Period $period): ?Period
+    public function overlapSingle(Period $period)
     {
         $this->ensurePrecisionMatches($period);
 
@@ -328,7 +328,7 @@ class Period implements IteratorAggregate
      *
      * @return \Spatie\Period\PeriodCollection|static[]
      */
-    public function overlap(Period ...$periods): PeriodCollection
+    public function overlap(Period ...$periods)
     {
         $overlapCollection = new PeriodCollection();
 
@@ -350,7 +350,7 @@ class Period implements IteratorAggregate
      *
      * @return static
      */
-    public function overlapAll(Period ...$periods): Period
+    public function overlapAll(Period ...$periods)
     {
         $overlap = clone $this;
 
@@ -365,7 +365,7 @@ class Period implements IteratorAggregate
         return $overlap;
     }
 
-    public function diffSingle(Period $period): PeriodCollection
+    public function diffSingle(Period $period)
     {
         $this->ensurePrecisionMatches($period);
 
@@ -412,7 +412,7 @@ class Period implements IteratorAggregate
      *
      * @return \Spatie\Period\PeriodCollection|static[]
      */
-    public function diff(Period ...$periods): PeriodCollection
+    public function diff(Period ...$periods)
     {
         if (count($periods) === 1 && ! $this->overlapsWith($periods[0])) {
             $collection = new PeriodCollection();
@@ -437,7 +437,7 @@ class Period implements IteratorAggregate
         return $collection;
     }
 
-    public function getPrecisionMask(): int
+    public function getPrecisionMask()
     {
         return $this->precisionMask;
     }
@@ -451,7 +451,7 @@ class Period implements IteratorAggregate
         );
     }
 
-    protected static function resolveDate($date, ?string $format): DateTimeImmutable
+    protected static function resolveDate($date, $format = null)
     {
         if ($date instanceof DateTimeImmutable) {
             return $date;
@@ -480,7 +480,7 @@ class Period implements IteratorAggregate
         return $dateTime;
     }
 
-    protected static function resolveFormat($date, ?string $format): string
+    protected static function resolveFormat($date, $format = null)
     {
         if ($format !== null) {
             return $format;
@@ -493,9 +493,9 @@ class Period implements IteratorAggregate
         return 'Y-m-d';
     }
 
-    protected function roundDate(DateTimeInterface $date, int $precision): DateTimeImmutable
+    protected function roundDate(DateTimeInterface $date, $precision)
     {
-        [$year, $month, $day, $hour, $minute, $second] = explode(' ', $date->format('Y m d H i s'));
+        list($year, $month, $day, $hour, $minute, $second) = explode(' ', $date->format('Y m d H i s'));
 
         $month = (Precision::MONTH & $precision) === Precision::MONTH ? $month : '01';
         $day = (Precision::DAY & $precision) === Precision::DAY ? $day : '01';
@@ -509,7 +509,7 @@ class Period implements IteratorAggregate
         );
     }
 
-    protected function createDateInterval(int $precision): DateInterval
+    protected function createDateInterval($precision)
     {
         $interval = [
             Precision::SECOND => 'PT1S',
@@ -523,7 +523,7 @@ class Period implements IteratorAggregate
         return new DateInterval($interval);
     }
 
-    protected function ensurePrecisionMatches(Period $period): void
+    protected function ensurePrecisionMatches(Period $period)
     {
         if ($this->precisionMask === $period->precisionMask) {
             return;

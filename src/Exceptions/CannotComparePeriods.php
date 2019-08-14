@@ -6,7 +6,7 @@ use Exception;
 
 class CannotComparePeriods extends Exception
 {
-    public static function precisionDoesNotMatch(): CannotComparePeriods
+    public static function precisionDoesNotMatch()
     {
         return new self("Cannot compare two periods whose precision doesn't match.");
     }

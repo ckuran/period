@@ -45,7 +45,7 @@ class Visualizer
      * @param array|Period[]|PeriodCollection[] $blocks
      * @return string
      */
-    public function visualize(array $blocks): string
+    public function visualize(array $blocks)
     {
         $matrix = $this->matrix($blocks);
 
@@ -73,7 +73,7 @@ class Visualizer
      * @param array $blocks
      * @return array
      */
-    private function matrix(array $blocks): array
+    private function matrix(array $blocks)
     {
         $width = $this->options['width'];
 
@@ -103,7 +103,7 @@ class Visualizer
      * @param int $width
      * @return array
      */
-    private function coords(Period $period, Period $bounds, int $width): array
+    private function coords(Period $period, Period $bounds, $width)
     {
         $boundsStart = $bounds->getStart()->getTimestamp();
         $boundsEnd = $bounds->getEnd()->getTimestamp();
@@ -133,11 +133,11 @@ class Visualizer
      * @param Period $bounds
      * @return array
      */
-    private function populateRow(array $row, Period $period, Period $bounds): array
+    private function populateRow(array $row, Period $period, Period $bounds)
     {
         $width = $this->options['width'];
 
-        [$startIndex, $endIndex] = $this->coords($period, $bounds, $width);
+        list($startIndex, $endIndex) = $this->coords($period, $bounds, $width);
 
         for ($i = 0; $i < $width; $i++) {
             if ($startIndex <= $i && $i < $endIndex) {
@@ -154,7 +154,7 @@ class Visualizer
      * @param array $blocks
      * @return Period|null
      */
-    private function bounds(array $blocks): ?Period
+    private function bounds(array $blocks)
     {
         $periods = new PeriodCollection();
 
@@ -178,14 +178,14 @@ class Visualizer
      * @param array $row
      * @return string
      */
-    private function toBars(array $row): string
+    private function toBars(array $row)
     {
         $tmp = '';
 
         for ($i = 0, $l = count($row); $i < $l; $i++) {
-            $prev = $row[$i - 1] ?? null;
+            $prev = isset($row[$i - 1]) ? $row[$i - 1] : null;
             $curr = $row[$i];
-            $next = $row[$i + 1] ?? null;
+            $next = isset($row[$i + 1]) ? $row[$i + 1] : null;
 
             // Small state machine to build the string
             switch (true) {

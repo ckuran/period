@@ -13,8 +13,8 @@ class BoundaryTest extends TestCase
     {
         $period = Period::make('2018-01-01', '2018-01-31', null, Boundaries::EXCLUDE_NONE);
 
-        $this->assertFalse($period->startExcluded());
-        $this->assertFalse($period->endExcluded());
+        $this->assertFalse((bool) $period->startExcluded());
+        $this->assertFalse((bool) $period->endExcluded());
     }
 
     /** @test */
@@ -22,8 +22,8 @@ class BoundaryTest extends TestCase
     {
         $period = Period::make('2018-01-01', '2018-01-31', null, Boundaries::EXCLUDE_START);
 
-        $this->assertTrue($period->startExcluded());
-        $this->assertFalse($period->endExcluded());
+        $this->assertTrue((bool) $period->startExcluded());
+        $this->assertFalse((bool) $period->endExcluded());
     }
 
     /** @test */
@@ -31,8 +31,8 @@ class BoundaryTest extends TestCase
     {
         $period = Period::make('2018-01-01', '2018-01-31', null, Boundaries::EXCLUDE_END);
 
-        $this->assertFalse($period->startExcluded());
-        $this->assertTrue($period->endExcluded());
+        $this->assertFalse((bool) $period->startExcluded());
+        $this->assertTrue((bool) $period->endExcluded());
     }
 
     /** @test */
@@ -40,8 +40,8 @@ class BoundaryTest extends TestCase
     {
         $period = Period::make('2018-01-01', '2018-01-31', null, Boundaries::EXCLUDE_ALL);
 
-        $this->assertTrue($period->startExcluded());
-        $this->assertTrue($period->endExcluded());
+        $this->assertTrue((bool) $period->startExcluded());
+        $this->assertTrue((bool) $period->endExcluded());
     }
 
     /** @test */
