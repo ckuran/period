@@ -24,7 +24,7 @@ class PeriodCollection implements ArrayAccess, Iterator, Countable
         return new static(...$periods);
     }
 
-    public function __construct(Period ...$periods)
+    public function __construct(array $periods)
     {
         $this->periods = $periods;
     }
